@@ -29,4 +29,4 @@ jobs:
           git add --all
           git commit -m "Deploy enduesoftware.com to Aptible"
           git remote add aptible git@beta.aptible.com:${APTIBLE_ENVIRONMENT}/${APTIBLE_APP}.git
-          git push aptible main
+          git push aptible master

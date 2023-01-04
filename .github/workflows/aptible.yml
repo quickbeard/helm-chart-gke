@@ -26,4 +26,4 @@ jobs:
           git init
           git remote add aptible git@beta.aptible.com:${APTIBLE_ENVIRONMENT}/${APTIBLE_APP}.git
           git commit -am "Deploy to Aptible"
-          git push aptible master
+          git push aptible main

@@ -28,5 +28,5 @@ jobs:
           git config --global user.name ${{ secrets.MY_NAME }}
           git remote add aptible git@beta.aptible.com:${APTIBLE_ENVIRONMENT}/${APTIBLE_APP}.git
           git add .
-          git commit -m "Deploy to Aptible"
+          git commit -am "Deploy to Aptible"
           git push aptible main

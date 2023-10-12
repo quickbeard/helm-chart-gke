@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    iam.gke.io/gcp-service-account: fhir-sa@endue-staging-263b.iam.gserviceaccount.com
+  name: fhir-sa
+  namespace: {{ .Release.Namespace }}

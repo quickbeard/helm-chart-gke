@@ -1,9 +1,8 @@
-# Source codes monorepo
+# Endue Monorepo
 
-## Frontend
+This monorepo uses bazel to build packages. 
 
-- main-website: company main website
+### Required tools
+- bazel (bazelisk is recommended)
+- pnpm, node
 
-## System
-
-- form-parser: Python code to parse the info from a particular form

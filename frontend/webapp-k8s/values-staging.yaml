@@ -1,0 +1,14 @@
+replicaCount: 1
+
+image:
+  repository: us-east1-docker.pkg.dev/endue-staging-263b/docker-images/webapp-endue
+  tag: latest
+  pullPolicy: IfNotPresent
+
+cluster:
+  projectID: endue-staging-263b
+  clusterName: endue-staging
+  region: us-central1
+
+ingress:
+  host: app-staging.enduesoftware.com

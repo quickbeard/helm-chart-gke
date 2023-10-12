@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+  labels:
+    app: webapp
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+      - name: webapp
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: webapp-db-url
+                key: webapp-db-url
+          - name: NEXTAUTH_URL
+            value: "https://app.enduesoftware.com"
+          - name: NEXTAUTH_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: nextauth-secret
+                key: nextauth-secret
+          - name: FHIR_SERVER_URL
+            value: "http://fhir-server.fhir-server:9080/fhir-server/api/v4"
+          - name: FHIR_SERVER_USERNAME
+            value: "fhiruser"
+          - name: FHIR_SERVER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fhirserver-password
+                key: fhirserver-password
+          - name: AUTH0_SECRET
+            value: "secret1"
+          - name: AUTH0_BASE_URL
+            value: "https://endue-dev.us.auth0.com"
+          - name: AUTH0_ISSUER_BASE_URL
+            value: "https://endue-dev.us.auth0.com"
+          - name: AUTH0_CLIENT_ID
+            value: "P3v5UQDlzAKxJjCGKnMgXKQiekrhVLRX"
+          - name: AUTH0_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: auth0-client-secret
+                key: auth0-client-secret
+          - name: GCP_CREDENTIALS_JSON
+            valueFrom:
+              secretKeyRef:
+                name: gcp-creds-secret
+                key: gcp-creds-secret
+          - name: OPENAI_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: openai-api-secret
+                key: openai-api-secret
+          - name: GCP_PROJECT_ID
+            value: {{ .Values.cluster.projectID }}
+          - name: FORM_PARSER_PROCESSOR_ID
+            valueFrom:
+              secretKeyRef:
+                name: form-parser-processor-id-secret
+                key: form-parser-processor-id-secret
+          - name: OCR_PROCESSOR_ID
+            valueFrom:
+              secretKeyRef:
+                name: ocr-processor-id-secret
+                key: ocr-processor-id-secret
+          - name: REDIS_HOST
+            valueFrom:
+              secretKeyRef:
+                name: redis-host-secret
+                key: redis-host-secret
+          - name: REDIS_PORT
+            valueFrom:
+              secretKeyRef:
+                name: redis-port-secret
+                key: redis-port-secret
+          - name: REDIS_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: redis-username-secret
+                key: redis-username-secret
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: redis-password-secret
+                key: redis-password-secret
+        ports:
+        - containerPort: 3000

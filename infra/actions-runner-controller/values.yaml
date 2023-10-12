@@ -1,0 +1,6 @@
+authSecretName: &authSecretName github-actions-pat
+
+actions-runner-controller:
+  authSecret:
+    create: false
+    name: *authSecretName

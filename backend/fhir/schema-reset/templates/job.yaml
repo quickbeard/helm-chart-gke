@@ -1,0 +1,45 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: schema-reset
+  labels:
+    app.kubernetes.io/component: schema-reset
+spec:
+  ttlSecondsAfterFinished: 10
+  template:
+    metadata:
+      name: schema-reset
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: schema-reset
+          image: ghcr.io/linuxforhealth/fhir-schematool
+          env:
+            - name: FHIR_DB_TYPE
+              value: "postgresql"
+            - name: FHIR_DB_HOSTNAME
+              value: "10.10.20.9"
+            - name: FHIR_DB_PORT
+              value: "5432"
+            - name: FHIR_DB_NAME
+              value: "postgres"
+            - name: FHIR_DB_ADMIN_USER
+              value: "postgres"
+            - name: FHIR_DB_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: fhirserver-db-password
+                  key: fhirserver-db-password
+            - name: FHIR_DB_SCHEMA
+              value: "fhirdata"
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              echo "Running drop-schemas task"
+              /opt/java/openjdk/bin/java -jar /opt/schematool/fhir-persistence-schema-*-cli.jar --db-type $${FHIR_DB_TYPE} --prop db.host=$${FHIR_DB_HOSTNAME} --prop db.port=$${FHIR_DB_PORT} --prop db.database=$${FHIR_DB_NAME} --prop user=$${FHIR_DB_ADMIN_USER} --prop password=$${FHIR_DB_ADMIN_PASSWORD} --schema-name $${FHIR_DB_SCHEMA} --drop-schema-fhir --confirm-drop
+              echo "SCHEMA DROP: DONE"
+              echo "Running create-schemas task"
+              /opt/java/openjdk/bin/java -jar /opt/schematool/fhir-persistence-schema-*-cli.jar --db-type $${FHIR_DB_TYPE} --prop db.host=$${FHIR_DB_HOSTNAME} --prop db.port=$${FHIR_DB_PORT} --prop db.database=$${FHIR_DB_NAME} --prop user=$${FHIR_DB_ADMIN_USER} --prop password=$${FHIR_DB_ADMIN_PASSWORD} --schema-name $${FHIR_DB_SCHEMA} --create-schemas
+              echo "Running update-schema task"
+              /opt/java/openjdk/bin/java -jar /opt/schematool/fhir-persistence-schema-*-cli.jar --db-type $${FHIR_DB_TYPE} --prop db.host=$${FHIR_DB_HOSTNAME} --prop db.port=$${FHIR_DB_PORT} --prop db.database=$${FHIR_DB_NAME} --prop user=$${FHIR_DB_ADMIN_USER} --prop password=$${FHIR_DB_ADMIN_PASSWORD} --schema-name $${FHIR_DB_SCHEMA} --update-schema
+              echo "SCHEMA CHANGE: DONE"

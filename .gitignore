@@ -131,3 +131,25 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# PyCharm
+.idea/
+.ijwb/
+
+# Bazel
+bazel-bin
+bazel-genfiles
+bazel-monorepo
+bazel-testlogs
+bazel-out
+
+# Node
+node_modules/
+
+# Charts tgz
+**/charts/*.tgz
+
+# Ignore vim files:
+*~
+*.swp
+*.swo

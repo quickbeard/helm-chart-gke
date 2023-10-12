@@ -1,0 +1,6 @@
+dependencies:
+- name: fhir-server
+  repository: https://linuxforhealth.github.io/lfh-helm
+  version: 0.9.1
+digest: sha256:71f27b204c895c758e75d384c4374bf91a2bc64d442488dc706ae93fd0c93756
+generated: "2023-02-02T14:47:43.827257-05:00"

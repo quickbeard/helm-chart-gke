@@ -1,0 +1,4 @@
+cluster:
+  projectID: endue-prod
+  clusterName: endue-prod
+  region: us-central1

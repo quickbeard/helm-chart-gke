@@ -1,0 +1,33 @@
+name: Deploy webapp to Kubernetes
+
+on: [repository_dispatch]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.client_payload.env }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - id: auth
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.DEFAULT_SA_JSON_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Connect to GKE cluster
+        run: |
+          export ENV=${{ github.event.client_payload.env }}
+          gcloud info
+          gcloud components install gke-gcloud-auth-plugin
+          gcloud container clusters get-credentials endue-$ENV --region us-central1 --project ${{ secrets.GCP_PROJECT_ID }}
+          
+      - name: Deploy webapp to K8s
+        run: |
+          export TAG=${{ github.event.client_payload.tag }}
+          export ENV=${{ github.event.client_payload.env }}
+          echo $TAG
+          helm upgrade --install webapp ./frontend/webapp-k8s/ --namespace webapp --create-namespace --set image.tag=$TAG -f ./frontend/webapp-k8s/values-$ENV.yaml

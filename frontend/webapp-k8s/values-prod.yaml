@@ -1,0 +1,14 @@
+replicaCount: 1
+
+image:
+  repository: us-east1-docker.pkg.dev/endue-prod/docker-images/webapp-endue
+  tag: latest
+  pullPolicy: IfNotPresent
+
+cluster:
+  projectID: endue-prod
+  clusterName: endue-prod
+  region: us-central1
+
+ingress:
+  host: app.enduesoftware.com

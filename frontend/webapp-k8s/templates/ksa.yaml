@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    iam.gke.io/gcp-service-account: webapp-sa@{{ .Values.cluster.projectID }}.iam.gserviceaccount.com
+  name: webapp-sa
+  namespace: {{ .Release.Namespace }}

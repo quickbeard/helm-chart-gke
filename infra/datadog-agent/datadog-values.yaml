@@ -1,0 +1,9 @@
+datadog:
+ apiKeyExistingSecret: dd-api-key
+ appKeyExistingSecret: dd-app-key
+ site: us5.datadoghq.com
+
+ # Enable Logs collection
+ logs:
+   enabled: true
+   containerCollectAll: true

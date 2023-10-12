@@ -1,0 +1,26 @@
+fhir-server:
+  ingress:
+    ingressClassName: nginx
+    hostname: "fhir.enduesoftware.com"
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt"
+      nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+    rules:
+      - host: "fhir.enduesoftware.com"
+        paths:
+          - path: "/"
+            pathType: Prefix
+    servicePort: http
+    tls:
+      - hosts:
+          - "fhir.enduesoftware.com"
+        secretName: "fhir-ssl"
+  exposeHttpEndpoint: true
+  postgresql:
+    enabled: false
+  db:
+    host: 10.10.20.4
+    user: postgres
+    dbSecret: fhirserver-db-password
+    adminPasswordKey: fhirserver-db-password
+    userPasswordKey: fhirserver-db-password
